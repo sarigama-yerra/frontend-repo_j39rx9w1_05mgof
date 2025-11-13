@@ -2,25 +2,25 @@ import { ShieldCheck, Zap, Eye, Cpu, Sparkles, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
-  { icon: ShieldCheck, title: 'Security First', desc: 'Kernel-level protection with constant signature rotation.' },
-  { icon: Zap, title: 'Lightning Fast', desc: 'Optimized injection ensures minimal performance overhead.' },
-  { icon: Eye, title: 'Undetected', desc: 'Advanced anti-flag technology keeps you safe while you play.' },
-  { icon: Cpu, title: 'Multi-Engine', desc: 'Supports a wide range of engines and titles with modular loaders.' },
-  { icon: Lock, title: 'HWID Binding', desc: 'Secure licensing tied to your device with one-click reset.' },
-  { icon: Sparkles, title: 'Neon UI', desc: 'Clean, glare-inspired interface with smooth animations.' },
+  { icon: ShieldCheck, title: 'Hardware Injector', desc: 'Arduino Uno-based module for safe, stable low-level interaction.' },
+  { icon: Lock, title: 'Device Binding', desc: 'Secure HWID binding and tamper-resistant handshakes.' },
+  { icon: Eye, title: 'Stealthy Operation', desc: 'Advanced anti-flag approach, no risky kernel drivers.' },
+  { icon: Cpu, title: 'Optimized Routines', desc: 'Low jitter, low latency USB communication.' },
+  { icon: Zap, title: 'Fast Setup', desc: 'Pre-flashed firmware + quick-start guide.' },
+  { icon: Sparkles, title: '#3DEC55 Aesthetic', desc: 'Signature neon green glow across the experience.' },
 ];
 
 export default function Features() {
   return (
     <section id="features" className="relative bg-black py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(132,204,22,0.15),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(61,236,85,0.15),transparent_60%)]" />
       <div className="relative max-w-7xl mx-auto px-6">
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-3xl sm:text-5xl font-bold text-lime-300"
+          className="text-3xl sm:text-5xl font-bold text-[#89ffae]"
         >
           Built To Dominate
         </motion.h2>
@@ -32,16 +32,16 @@ export default function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05, duration: 0.55 }}
-              className="group relative rounded-xl border border-lime-500/20 bg-gradient-to-br from-white/[0.02] to-white/[0.005] p-6 hover:border-lime-400/40"
+              className="group relative rounded-xl border border-[#3DEC55]/20 bg-gradient-to-br from-white/[0.02] to-white/[0.005] p-6 hover:border-[#3DEC55]/40"
             >
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <f.icon className="w-6 h-6 text-lime-400" />
-                  <span className="absolute -inset-1 rounded-full blur-md bg-lime-500/20" />
+                  <f.icon className="w-6 h-6 text-[#3DEC55]" />
+                  <span className="absolute -inset-1 rounded-full blur-md bg-[#3DEC55]/20" />
                 </div>
-                <h3 className="text-lg font-semibold text-lime-200">{f.title}</h3>
+                <h3 className="text-lg font-semibold text-[#e9ffef]">{f.title}</h3>
               </div>
-              <p className="mt-3 text-lime-200/70">{f.desc}</p>
+              <p className="mt-3 text-[#c7ffd7]/85">{f.desc}</p>
             </motion.div>
           ))}
         </div>

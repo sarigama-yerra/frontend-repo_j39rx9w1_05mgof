@@ -10,13 +10,13 @@ function App() {
       <Hero />
       <Features />
       <Pricing />
-      <footer className="border-t border-lime-500/20 py-10">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-lime-200/70">
+      <footer className="border-t border-[#3DEC55]/20 py-10">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[#BFFFD0]/80">
           <p>© {new Date().getFullYear()} Apex Scripts — All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-lime-300">Terms</a>
-            <a href="#" className="hover:text-lime-300">Privacy</a>
-            <a href="#" className="hover:text-lime-300">Contact</a>
+            <a href="#" className="hover:text-white">Terms</a>
+            <a href="#" className="hover:text-white">Privacy</a>
+            <a href="#" className="hover:text-white">Contact</a>
           </div>
         </div>
       </footer>
