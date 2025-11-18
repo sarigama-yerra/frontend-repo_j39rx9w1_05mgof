@@ -1,12 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react'
 import { useCart } from '../context/CartContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function CartDrawer({ open, onClose }) {
   const { cart, updateItem, removeItem } = useCart()
+  const navigate = useNavigate()
 
   const items = cart?.items || []
   const subtotal = cart?.subtotal || 0
+
+  const goCheckout = () => {
+    onClose?.()
+    navigate('/checkout')
+  }
 
   return (
     <AnimatePresence>
@@ -70,7 +77,7 @@ export default function CartDrawer({ open, onClose }) {
                 <span>Subtotal</span>
                 <span className="text-[#89ffae] font-bold">${subtotal.toFixed(2)}</span>
               </div>
-              <button className="mt-3 w-full py-2 rounded-md bg-[#3DEC55] text-black font-semibold shadow-[0_0_22px_rgba(61,236,85,0.55)] hover:shadow-[0_0_30px_rgba(61,236,85,0.7)]">
+              <button onClick={goCheckout} disabled={items.length === 0} className="mt-3 w-full py-2 rounded-md bg-[#3DEC55] disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold shadow-[0_0_22px_rgba(61,236,85,0.55)] hover:shadow-[0_0_30px_rgba(61,236,85,0.7)]">
                 Continue to Checkout
               </button>
             </div>

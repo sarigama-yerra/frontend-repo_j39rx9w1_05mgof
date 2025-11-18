@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext'
+import NeonBurst from '../components/NeonBurst'
 
 // Simple inline SVG icon badges for each game (lightweight, brand-agnostic)
 const IconBadge = ({ children, tint = '#3DEC55' }) => (
@@ -32,9 +34,10 @@ const slideVariants = {
 
 export default function Licenses() {
   const { addItem } = useCart()
+  const [burstKey, setBurstKey] = useState(0)
 
   const addLicense = async (g) => {
-    await addItem({
+    const res = await addItem({
       sku: `license-${g.key}-weekly`,
       name: `${g.name} Weekly License`,
       price: g.price,
@@ -43,12 +46,23 @@ export default function Licenses() {
       game_key: g.key,
       billing_cycle: 'weekly'
     })
+    if (res?.ok) {
+      setBurstKey(k => k + 1)
+      try {
+        const audio = new Audio(
+          'data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAAACQAAAC0AAAC/////wAAAC4AAAACAAACcQAAABkAAAByAAAA/////wAAABIAAAACAAACcQAAABAAAABPAAAAP//AACQAAABmAAAAGZhdGEAAAAA'
+        )
+        audio.volume = 0.25
+        audio.play().catch(() => {})
+      } catch {}
+    }
   }
 
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <section className="relative py-20">
+        <NeonBurst key={burstKey} run={burstKey} />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(61,236,85,0.12),transparent_60%)]" />
         <div className="relative max-w-7xl mx-auto px-6">
           <motion.h1
@@ -90,7 +104,7 @@ export default function Licenses() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.5 }}
-                className="rounded-xl border border-[#3DEC55]/25 bg-white/[0.02] p-6"
+                className="rounded-xl border border-[#3DEC55]/25 bg-white/[0.02] p-6 relative overflow-hidden"
               >
                 <div className="flex items-center gap-3">
                   {gameIcons[g.key]}
@@ -102,7 +116,7 @@ export default function Licenses() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => addLicense(g)}
-                  className="mt-4 w-full px-4 py-2 rounded-md bg-[#3DEC55] text-black font-semibold shadow-[0_0_20px_rgba(61,236,85,0.5)] hover:shadow-[0_0_28px_rgba(61,236,85,0.65)]"
+                  className="mt-4 w-full px-4 py-2 rounded-md bg-[#3DEC55] text-black font-semibold shadow-[0_0_20px_rgba(61,236,85,0.5)] hover:shadow-[0_0_28px_rgba(61,236,85,0.65)] relative z-10"
                 >
                   Add {g.name}
                 </motion.button>

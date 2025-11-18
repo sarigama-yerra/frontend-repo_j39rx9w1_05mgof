@@ -2,7 +2,24 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 const CartContext = createContext(null)
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL || ''
+function deriveBackendBase() {
+  const env = import.meta.env.VITE_BACKEND_URL
+  if (env && typeof env === 'string' && env.trim().length) return env
+  // Fallback heuristic: swap 3000 -> 8000 on same host
+  try {
+    const url = new URL(window.location.href)
+    if (url.port === '3000') {
+      url.port = '8000'
+      return url.origin
+    }
+    // If no explicit port, attempt same origin (useful in some deployments)
+    return url.origin
+  } catch {
+    return ''
+  }
+}
+
+const BACKEND = deriveBackendBase()
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState({ items: [], subtotal: 0, currency: 'USD' })
@@ -13,6 +30,7 @@ export function CartProvider({ children }) {
     try {
       setLoading(true)
       const res = await fetch(`${BACKEND}/api/cart`)
+      if (!res.ok) throw new Error(`GET /api/cart ${res.status}`)
       const data = await res.json()
       setCart(data)
     } catch (e) {
@@ -24,6 +42,7 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     refresh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const addItem = async (item) => {
@@ -35,10 +54,16 @@ export function CartProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item)
       })
+      if (!res.ok) {
+        const msg = await res.text().catch(() => '')
+        throw new Error(msg || 'Failed to add')
+      }
       const data = await res.json()
       setCart(data)
+      return { ok: true }
     } catch (e) {
       setError('Failed to add item')
+      return { ok: false, error: e?.message || 'Failed to add item' }
     } finally {
       setLoading(false)
     }
@@ -52,6 +77,7 @@ export function CartProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sku, billing_cycle, quantity })
       })
+      if (!res.ok) throw new Error('Failed to update')
       const data = await res.json()
       setCart(data)
     } catch (e) {
@@ -69,6 +95,7 @@ export function CartProvider({ children }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sku, billing_cycle })
       })
+      if (!res.ok) throw new Error('Failed to remove')
       const data = await res.json()
       setCart(data)
     } catch (e) {
