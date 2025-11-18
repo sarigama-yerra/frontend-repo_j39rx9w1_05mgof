@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
+import { useCart } from '../context/CartContext'
 
 // Simple inline SVG icon badges for each game (lightweight, brand-agnostic)
 const IconBadge = ({ children, tint = '#3DEC55' }) => (
@@ -30,6 +31,20 @@ const slideVariants = {
 };
 
 export default function Licenses() {
+  const { addItem } = useCart()
+
+  const addLicense = async (g) => {
+    await addItem({
+      sku: `license-${g.key}-weekly`,
+      name: `${g.name} Weekly License`,
+      price: g.price,
+      quantity: 1,
+      type: 'license',
+      game_key: g.key,
+      billing_cycle: 'weekly'
+    })
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
@@ -86,9 +101,10 @@ export default function Licenses() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => addLicense(g)}
                   className="mt-4 w-full px-4 py-2 rounded-md bg-[#3DEC55] text-black font-semibold shadow-[0_0_20px_rgba(61,236,85,0.5)] hover:shadow-[0_0_28px_rgba(61,236,85,0.65)]"
                 >
-                  License {g.name}
+                  Add {g.name}
                 </motion.button>
               </motion.div>
             ))}

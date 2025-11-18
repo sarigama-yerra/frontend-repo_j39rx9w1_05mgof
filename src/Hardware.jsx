@@ -1,8 +1,22 @@
 import { motion } from 'framer-motion';
 import { Cpu, ShieldCheck, Package, Cable, CreditCard } from 'lucide-react';
 import Navbar from './components/Navbar';
+import { useCart } from './context/CartContext'
 
 export default function Hardware() {
+  const { addItem } = useCart()
+
+  const addHardware = async () => {
+    await addItem({
+      sku: 'apex-hw-uno',
+      name: 'Apex Injector Kit (Arduino Uno)',
+      price: 79,
+      quantity: 1,
+      type: 'hardware',
+      billing_cycle: 'one-time'
+    })
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
@@ -31,7 +45,7 @@ export default function Hardware() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.55 }}
-              className="lg:col-span-2 rounded-2xl border border-[#3DEC55]/25 bg-white/[0.02] p-6"
+              className="lg:col-span-2 rounded-2xl border border-[#3DEC55]/25 bg:white/[0.02] p-6"
             >
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -66,10 +80,11 @@ export default function Hardware() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={addHardware}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-[#3DEC55] text-black font-semibold shadow-[0_0_22px_rgba(61,236,85,0.55)] hover:shadow-[0_0_30px_rgba(61,236,85,0.7)]"
               >
                 <CreditCard className="w-4 h-4" />
-                Buy Hardware
+                Add to Cart
               </motion.button>
               <p className="mt-3 text-xs text-[#c7ffd7]/70">Licenses sold separately per game.</p>
             </motion.div>
